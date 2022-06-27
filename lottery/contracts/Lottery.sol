@@ -10,7 +10,7 @@ contract Lottery {
     }
 
     function enter() public payable {
-        require(msg.value > 0.1 eth);
+        require(msg.value > 1 wei, "Need send some ether");
         players.push(msg.sender);
     }
 
@@ -18,8 +18,15 @@ contract Lottery {
         return uint(sha3(block.difficulty, now, players));
     }
 
-    function pickWinner() public {
+    function pickWinner() public restricted{
+
         uint index = random() % players.length;
         players[index].transfer(this.balance);// this.balance is all the money the contract has
+        players = new address[](0);// reseting the dynamic array with initial size of 0
+    }
+
+    modifier restricted() {
+        require(msg.sender == manager, "Just the manager can use this funciton");
+        _; // here comes the code that wrapps the modifier
     }
 }
