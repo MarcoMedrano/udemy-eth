@@ -25,6 +25,10 @@ contract Lottery {
         players = new address[](0);// reseting the dynamic array with initial size of 0
     }
 
+    function getPlayers() public view returns (address[]) {
+        return players;
+    }
+
     modifier restricted() {
         require(msg.sender == manager, "Just the manager can use this funciton");
         _; // here comes the code that wrapps the modifier
