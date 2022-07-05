@@ -3,7 +3,8 @@ const Web3 = require('web3');
 const { interface, bytecode } = require('./compile');
 
 const provider = new HDWalletProvider(
-  'REPLACE_WITH_YOUR_MNEMONIC',
+
+  //'REPLACE_WITH_YOUR_MNEMONIC',
   // remember to change this to your own phrase!
   'https://rinkeby.infura.io/v3/15c1d32581894b88a92d8d9e519e476c'
   // remember to change this to your own endpoint!
@@ -20,6 +21,9 @@ const deploy = async () => {
     .send({ gas: '1000000', from: accounts[0] });
 
   console.log('Contract deployed to', result.options.address);
+  
+  const fs = require('fs');
   provider.engine.stop();
+  fs.writeFileSync("../lottery-react/src/lottery-abi.json", interface);
 };
 deploy();
