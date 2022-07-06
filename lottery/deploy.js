@@ -1,9 +1,9 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const Web3 = require('web3');
-const { interface, bytecode } = require('./compile');
+const { abi, evm } = require('./compile');
 
 const provider = new HDWalletProvider(
-
+  'glad prefer view print six inject tooth vacuum fold receive famous expect',
   //'REPLACE_WITH_YOUR_MNEMONIC',
   // remember to change this to your own phrase!
   'https://rinkeby.infura.io/v3/15c1d32581894b88a92d8d9e519e476c'
@@ -16,14 +16,14 @@ const deploy = async () => {
 
   console.log('Attempting to deploy from account', accounts[0]);
 
-  const result = await new web3.eth.Contract(JSON.parse(interface))
-    .deploy({ data: bytecode })
+  const result = await new web3.eth.Contract(abi)
+    .deploy({ data: evm.bytecode.object })
     .send({ gas: '1000000', from: accounts[0] });
 
   console.log('Contract deployed to', result.options.address);
   
   const fs = require('fs');
   provider.engine.stop();
-  fs.writeFileSync("../lottery-react/src/lottery-abi.json", interface);
+  fs.writeFileSync("../lottery-react/src/lottery-abi.json", JSON.stringify(abi));
 };
 deploy();
