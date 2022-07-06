@@ -24,7 +24,10 @@ class App extends React.Component {
     this.setState({ message: "Waiting on transaction..." });
 
     // this transaction will take about 15s
-    await lottery.methods.enter().send({ from: accounts[0]});// to send it, is needed to specify the account
+    await lottery.methods.enter().send({
+      from: accounts[0],
+      value: web3.utils.toWei(this.state.value, "ether"),
+    });// to send it, is needed to specify the account
 
     this.setState({ message: "A winner has been picked!" });
   }
